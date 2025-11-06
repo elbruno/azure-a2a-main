@@ -1,14 +1,14 @@
 # ⚡ Azure A2A Multi-Agent System
 
-This repository is an **experimental (and evolving)** implementation of an **Azure-based A2A multi-agent orchestration system**. 
+This repository is an **experimental (and evolving)** implementation of an **Azure-based A2A multi-agent orchestration system**.
 
 It demonstrates how to design, host, and scale a distributed network of intelligent agents using open protocols (**A2A**, **MCP**), **Azure AI Foundry**, and Azure-native services for **memory** and **observability**. The goal is to create an interoperable, production-grade framework that allows agents to communicate, collaborate, and reason together across environments and organizations.
 
-This repository contains the complete documentation and setup instructions including the **Host Orchestrator (backend)**, **Frontend UI (frontend)**, and a collection of **specialized remote agents (remote_agents)**. Each remote agent runs independently and can connect to the Host Orchestrator through open protocols like **A2A (Agent-to-Agent)**. 
+This repository contains the complete documentation and setup instructions including the **Host Orchestrator (backend)**, **Frontend UI (frontend)**, and a collection of **specialized remote agents (remote_agents)**. Each remote agent runs independently and can connect to the Host Orchestrator through open protocols like **A2A (Agent-to-Agent)**.
 
-You'll find detailed guides to install, configure, and run the full system, along with a **ready-to-use Agent Template** for building custom agents, plus sample agents that showcase realistic enterprise workflows including the **Claims, Fraud, Legal, Branding, Classification, Deep Search, Assessment & Estimation, Customer Support (MCP), Image Analysis, Image Generation, and Sentiment Analysis (Google ADK)** agents. Including an agent template for you to build your own remote agents quickly. 
+You'll find detailed guides to install, configure, and run the full system, along with a **ready-to-use Agent Template** for building custom agents, plus sample agents that showcase realistic enterprise workflows including the **Claims, Fraud, Legal, Branding, Classification, Deep Search, Assessment & Estimation, Customer Support (MCP), Image Analysis, Image Generation, and Sentiment Analysis (Google ADK)** agents. Including an agent template for you to build your own remote agents quickly.
 
-Special thank you to Sergey Chernykh, Ryan Morgan and Owen Van Valkenburg for their peer review and contribution. 
+Special thank you to Sergey Chernykh, Ryan Morgan and Owen Van Valkenburg for their peer review and contribution.
 
 ---
 
@@ -49,7 +49,7 @@ Special thank you to Sergey Chernykh, Ryan Morgan and Owen Van Valkenburg for th
 
 > _Click any thumbnail to watch the Azure A2A multi-agent system in action — featuring dynamic orchestration, multimodal memory, and remote agents across environments._
 
-## 📖 Architecture Whitepaper — *Scaling Agents for Enterprises*
+## 📖 Architecture Whitepaper — _Scaling Agents for Enterprises_
 
 A full companion paper is included with this repository, explaining the vision, architecture, protocols, and patterns behind this system.
 
@@ -79,16 +79,58 @@ Instructions below explain how to set up each component and run the system local
 
 Install the following locally:
 
-- Git and VS Code *(recommended)*
+- Git and VS Code _(recommended)_
 - Python 3.13+
-- Optional: Docker 
+- Optional: Docker
 
 Provision the following services in your Microsoft Azure subscription:
 
 - Azure AI Foundry (make sure you have a model and embeddings model created)
-- Search Service *(optional but recommended)*
-- Storage Account *(optional but recommended)*
-- Application Insights *(optional)*
+- Search Service _(optional but recommended)_
+- Storage Account _(optional but recommended)_
+- Application Insights _(optional)_
+
+---
+
+## 🧰 Dev Container & Unified Bootstrap
+
+Prefer a pre-configured workspace? Launch the repository inside the included VS Code Dev Container:
+
+1. Install the **Dev Containers** extension in VS Code.
+2. Open the command palette and choose **Dev Containers: Reopen in Container**.
+3. Wait for the post-create hook to finish installing dependencies (it will reuse `scripts/bootstrap.sh --install-only`).
+
+When the container is ready, start all core services with:
+
+```bash
+./scripts/bootstrap.sh
+```
+
+This command installs missing dependencies (if needed) and launches both the backend API and the Next.js frontend, streaming logs to `.logs/backend.log` and `.logs/frontend.log`. Use `Ctrl+C` to stop everything cleanly. Pass `--install-only` or `--start-only` for fine-grained control; `--skip-frontend`/`--skip-backend` are also available.
+
+### Windows PowerShell Workflow
+
+Outside the container, run the companion PowerShell script instead:
+
+```powershell
+.\scripts\bootstrap.ps1
+```
+
+It mirrors the shell script’s behaviour, creates the Python virtual environment, installs npm packages, and delegates service orchestration to `scripts/start-all.ps1`. Both scripts share the same optional switches (`-InstallOnly`, `-StartOnly`, `-SkipFrontend`, `-SkipBackend`).
+
+Need only the service launcher? Invoke:
+
+```powershell
+.\scripts\start-all.ps1
+```
+
+or inside Linux/macOS shells:
+
+```bash
+./scripts/start-all.sh
+```
+
+Each launcher writes rotating logs under `.logs/` and will stop all child processes when the parent shell exits.
 
 ---
 
@@ -105,7 +147,7 @@ cd azure-a2a-main
 
 ### 🔧 2. Configure the Root Environment Variables
 
-There is **one `.env.example` file in the root** of this repo. 
+There is **one `.env.example` file in the root** of this repo.
 
 Create a copy of the file and rename it to `.env`:
 
@@ -123,7 +165,7 @@ The **Host Orchestrator** acts as the core intelligence and coordination hub:
 
 - Registers agents through local A2A handshake or through the agent catalog
 - Manages memory and multimodal content processing
-- Provides Azure AI Foundry agent orchestration to run distributed A2A multi-agent workflows 
+- Provides Azure AI Foundry agent orchestration to run distributed A2A multi-agent workflows
 - WebSocket for backend and frontend integration: `http://localhost:8080`
 - A2A Backend API server: `http://localhost:12000`
 
@@ -156,7 +198,7 @@ The **Frontend** provides an interactive web interface for managing, orchestrati
 - Includes a local agent catalog for browsing and registering agents dynamically
 - Runs locally at `http://localhost:3000` by default
 
-First download 👉 https://nodejs.org/en/download/
+First download 👉 <https://nodejs.org/en/download/>
 
 ```bash
 cd frontend
@@ -176,11 +218,12 @@ http://localhost:3000
 
 ## 🤖 Remote Agents Setup Guide
 
-A set of sample specialized A2A remote agents is provided in the `remote_agents` folder. 
+A set of sample specialized A2A remote agents is provided in the `remote_agents` folder.
 
 ---
 
 ### 🎨 Azure AI Foundry (A2A) — **Template Agent** ⭐
+
 **Directory:** `remote_agents\azurefoundry_template` · **A2A_PORT=9020** (customizable)
 
 **A ready-to-use template for building your own custom A2A agents.** The Template Agent provides all the boilerplate code needed to create specialized remote agents that integrate seamlessly with the Azure A2A multi-agent system. Simply customize the agent's personality, skills, and domain knowledge by editing 3 key sections. Includes full A2A protocol support, file search integration for document grounding, optional Bing search, Gradio UI for testing, and production-ready logging. Perfect starting point for creating domain-specific agents in minutes.
@@ -190,6 +233,7 @@ A set of sample specialized A2A remote agents is provided in the `remote_agents`
 ---
 
 ### 🟦 Azure AI Foundry (A2A) — **Assessment & Estimation Agent**
+
 **Directory:** `remote_agents\azurefoundry_assessment` · **A2A_PORT=9002**
 
 The AI Foundry Assessment & Estimation Agent is an Azure-based A2A-compatible agent grounded in synthetic data for multi-line insurance assessment and cost estimation. It covers auto, property, travel, and health domains, applying structured workflows and QA rules. The agent runs as both an API service and interactive Gradio UI, integrating seamlessly with a Host Orchestrator for multi-agent collaboration.
@@ -197,6 +241,7 @@ The AI Foundry Assessment & Estimation Agent is an Azure-based A2A-compatible ag
 ---
 
 ### 🟩 Azure AI Foundry (A2A) — **Branding Agent**
+
 **Directory:** `remote_agents\azurefoundry_branding` · **A2A_PORT=9033`
 
 The AI Foundry Branding & Content Agent is an Azure-based A2A-compatible agent grounded in synthetic branding data that enforces visual and tonal consistency. It provides guidance on brand colors, lighting, composition, and copy tone to ensure all creative outputs stay on-brand. The agent runs as both an API service and interactive Gradio UI, integrating with a Host Orchestrator for collaborative content creation.
@@ -204,6 +249,7 @@ The AI Foundry Branding & Content Agent is an Azure-based A2A-compatible agent g
 ---
 
 ### 🟧 Azure AI Foundry (A2A) — **Claims Agent**
+
 **Directory:** `remote_agents\azurefoundry_claims` · **A2A_PORT=9001`
 
 The AI Foundry Claims Specialist Agent is an Azure-based A2A-compatible agent grounded in synthetic insurance data for realistic multi-line claims processing. It provides intelligent coverage validation, settlement estimation, documentation guidance, and regulatory compliance across auto, property, travel, and health domains. The agent operates as both an API service and interactive Gradio UI, integrating with a Host Orchestrator for coordinated claims handling and escalation.
@@ -211,6 +257,7 @@ The AI Foundry Claims Specialist Agent is an Azure-based A2A-compatible agent gr
 ---
 
 ### 🟥 Azure AI Foundry (A2A) — **Classification Agent**
+
 **Directory:** `remote_agents\azurefoundry_classification` · **A2A_PORT=8001`
 
 The AI Foundry Classification Triage Agent is an Azure-based A2A-compatible agent grounded in synthetic customer support data for realistic incident handling. It classifies incoming issues into categories like fraud, payment, security, or technical problems, assesses their priority, and routes them to the right teams using ServiceNow standards. The agent runs as both an API service and interactive Gradio UI, integrating with a Host Orchestrator for automated triage and escalation workflows.
@@ -218,6 +265,7 @@ The AI Foundry Classification Triage Agent is an Azure-based A2A-compatible agen
 ---
 
 ### 🟪 Azure AI Foundry (A2A) — **Deep Search Agent**
+
 **Directory:** `remote_agents\azurefoundry_Deep_Search` · **A2A_PORT=8002`
 
 The AI Foundry Deep Search Knowledge Agent is an Azure-based A2A-compatible agent grounded in synthetic customer support documentation. It performs deep semantic search across topics like account management, billing, fraud prevention, and technical support to deliver precise, context-aware answers. The agent operates as both an API service and interactive Gradio UI, integrating with a Host Orchestrator for enterprise knowledge retrieval and customer assistance workflows.
@@ -225,20 +273,23 @@ The AI Foundry Deep Search Knowledge Agent is an Azure-based A2A-compatible agen
 ---
 
 ### 🟫 Azure AI Foundry (A2A) — **Fraud Agent**
+
 **Directory:** `remote_agents\azurefoundry_fraud` · **A2A_PORT=9004`
 
 The AI Foundry Fraud Intelligence Agent is an Azure-based A2A-compatible agent grounded in synthetic fraud investigation data for realistic multi-line insurance analysis. It detects red flags, evaluates claim patterns, and recommends SIU escalation across auto, property, travel, and health domains. The agent operates as both an API service and interactive Gradio UI, integrating with a Host Orchestrator for coordinated fraud detection and compliance workflows.
 
 ---
 
-### ⬛ Azure AI Foundry (A2A) — **Image Analysis Agent** *(Experimental)*
+### ⬛ Azure AI Foundry (A2A) — **Image Analysis Agent** _(Experimental)_
+
 **Directory:** `remote_agents\azurefoundry_image_analysis` · **A2A_PORT=9066`
 
 The AI Foundry Image Analysis Agent is an Azure-based A2A-compatible vision agent that **analyzes and interprets visual content**. It performs **detailed image understanding, object detection, scene analysis, and visual quality assessment** to provide actionable insights. The agent operates as an API service, integrating with a Host Orchestrator for coordinated visual analysis and content validation workflows.
 
 ---
 
-### ⬛ Azure AI Foundry (A2A) — **Image Generation Agent** *(Experimental)*
+### ⬛ Azure AI Foundry (A2A) — **Image Generation Agent** _(Experimental)_
+
 **Directory:** `remote_agents\azurefoundry_image_generator` · **A2A_PORT=9010`
 
 The AI Foundry Image Generator Agent is an Azure-based A2A-compatible creative agent that **transforms text prompts into high-quality images** and performs **advanced image editing**. It supports **in-painting, masking, and prompt-based modifications** to refine or extend existing visuals. The agent operates as an API service, integrating with a Host Orchestrator for coordinated visual creation and editing workflows.
@@ -246,13 +297,15 @@ The AI Foundry Image Generator Agent is an Azure-based A2A-compatible creative a
 ---
 
 ### 🟨 Azure AI Foundry (A2A) — **Legal Agent**
+
 **Directory:** `remote_agents\azurefoundry_legal` · **A2A_PORT=8006`
 
 The AI Foundry Legal Compliance & Regulatory Agent is an Azure-based A2A-compatible agent grounded in synthetic legal and compliance data. It analyzes regulatory frameworks like GDPR, SOX, and CCPA, performs risk assessments, and reviews contracts and compliance documents for legal integrity. The agent operates as both an API service and interactive Gradio dashboard, integrating with a Host Orchestrator for coordinated governance and audit workflows.
 
 ---
 
-### 🟦 Azure AI Foundry (A2A + MCP) — **Customer Support Agent (MCP)** *(Experimental)*
+### 🟦 Azure AI Foundry (A2A + MCP) — **Customer Support Agent (MCP)** _(Experimental)_
+
 **Directory:** `remote_agents\azurefoundry_SN` · **A2A_PORT=8000`
 
 The AI Foundry Expert Agent is an Azure-based **A2A and MCP-compatible** agent grounded in synthetic enterprise and support data. It can execute **ServiceNow actions via MCP server** (create and update **incidents**, look up customers, etc.), execute banking actions, perform web (with Bing added to Foundry agent portal) and document searches, and manage **human-in-the-loop** escalations. The agent runs as both an API service and interactive Gradio UI, integrating with a Host Orchestrator to automate IT service management, banking workflows, and expert escalation scenarios.
@@ -260,6 +313,7 @@ The AI Foundry Expert Agent is an Azure-based **A2A and MCP-compatible** agent g
 ---
 
 ### 🟩 Google ADK (A2A) — **Sentiment Agent (MCP)**
+
 **Directory:** `remote_agents\google_adk` · **A2A_PORT=8003`
 
 The Sentiment Analysis Agent is a Google ADK A2A-compatible agent grounded in synthetic customer interaction data. It detects emotional tone, classifies sentiment, and personalizes responses across customer feedback, chats, and service interactions. The agent operates as a lightweight API service that integrates with a Host Orchestrator to enhance customer understanding, improve satisfaction, and guide next-step decisions based on detected sentiment.
@@ -310,14 +364,14 @@ python __main__.py
 
 This agent is experimental but fully functional.
 
-To set up the MCP server, an MCP Server is also provided in the `MCP_SERVICENOW/servicenow-mcp` directory to demonstrate ServiceNow MCP integration. 
+To set up the MCP server, an MCP Server is also provided in the `MCP_SERVICENOW/servicenow-mcp` directory to demonstrate ServiceNow MCP integration.
 
 **To use it in your own ServiceNow environment, you’ll need to supply your own ServiceNow credentials in the `.env` file.**
 
 **Important:** Azure AI Foundry agents require a **public MCP endpoint**, not `localhost` as currently configured. You can either:
 
 - Deploy the MCP server in a container or host with a public URL, or
-- Use **NGROK** to expose localhost. 
+- Use **NGROK** to expose localhost.
 
 The Customer Support MCP Agent can run as a standalone agent and includes its own **Gradio UI**, which you can use to test it independently or demonstrate **human-in-the-loop** orchestration between the host and remote agent.
 

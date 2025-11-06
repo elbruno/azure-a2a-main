@@ -1,0 +1,68 @@
+{
+    "name": "azure-a2a-dev",
+    "build": {
+        "dockerfile": "../frontend/Dockerfile",
+        "context": "../frontend",
+        "target": "base"
+    },
+    "workspaceFolder": "/workspace",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+    "runArgs": [
+        "--init"
+    ],
+    "containerEnv": {
+        "NEXT_TELEMETRY_DISABLED": "1"
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/python:1": {
+            "version": "3.12"
+        },
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/azure-cli:1": {}
+    },
+    "postCreateCommand": "bash .devcontainer/post-create.sh",
+    "postStartCommand": "bash .devcontainer/post-start.sh",
+    "remoteEnv": {
+        "PIP_CACHE_DIR": "/workspace/.cache/pip"
+    },
+    "forwardPorts": [
+        12000,
+        3000,
+        8080,
+        8501
+    ],
+    "portsAttributes": {
+        "12000": {
+            "label": "Backend API"
+        },
+        "3000": {
+            "label": "Frontend UI"
+        },
+        "8080": {
+            "label": "WebSocket Server"
+        },
+        "8501": {
+            "label": "Mesop UI"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "ms-toolsai.jupyter",
+                "esbenp.prettier-vscode",
+                "dbaeumer.vscode-eslint",
+                "ms-azuretools.vscode-bicep"
+            ],
+            "settings": {
+                "python.defaultInterpreterPath": "/usr/local/bin/python3",
+                "python.analysis.inlayHints.variableTypes": true,
+                "editor.formatOnSave": true,
+                "files.trimTrailingWhitespace": true,
+                "files.insertFinalNewline": true
+            }
+        }
+    },
+    "remoteUser": "root"
+}
