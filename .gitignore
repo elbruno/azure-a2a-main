@@ -34,3 +34,4 @@ remote_agents/azurefoundry_image_generator/azure_servicenow_agent.log
 
 # Media files
 *.mp4
+*.cache
