@@ -15,11 +15,30 @@
 __pycache__/
 **/__pycache__/
 *.py[cod]
+*.pyc
+*.pyo
+*.pyd
+.Python
 
 # Virtual environments
 env/
 venv/
 .venv/
+
+# Node modules and build files
+node_modules/
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+
+# Cache files
+.cache/
+*.cache
+**/.cache/
+.npm/
+.eslintcache
 
 # Generated media and uploads
 backend/images/
@@ -34,4 +53,14 @@ remote_agents/azurefoundry_image_generator/azure_servicenow_agent.log
 
 # Media files
 *.mp4
-*.cache
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
